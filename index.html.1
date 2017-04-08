@@ -14,7 +14,6 @@
 <script>
 //サーバー側とつなぐため
 var socket = io();
-var socketId;
 
 /***********************************
  * JQuery（画面）のイベントハンドラの登録
@@ -60,8 +59,7 @@ $(function() {
  * 接続したときに呼ばれるイベント
  * ここで作ったイベント名でサーバーサイドの処理を紐付ける
  **/
-socket.on('welcome', function(id, messageArray) {
-	socketId = id;
+socket.on('welcome', function(messageArray) {
 	//debug
 	//console.log(messageArray);
 
@@ -70,13 +68,8 @@ socket.on('welcome', function(id, messageArray) {
 
 	//DBから取得したメッセージをulに追加
 	messageArray.forEach(function(msg) {
-		console.log(id);
-		//自分のIDの場合は右に表示
-		if(msg.user_id == socketId) {
-			$('#message').append($('<li class="right_balloon">').text(id + " : " + msg.comment));
-		} else {
-			$('#message').append($('<li class="left_balloon">').text(id + " : " + msg.comment));
-		}
+		//console.log(msg);
+		$('#message').append($('<li>').text(msg.user_id + " : " + msg.comment));
 	});
 });
 
@@ -95,13 +88,7 @@ socket.on('user cnt', function(cnt) {
  **/
 socket.on('message', function(msj, id) {
 	// 取得したメッセージをulに追加
-	console.log(socket.io);
-	//自分のIDの場合は右に表示
-	if(id == socketId) {
-		$('#message').append($('<li class="right_balloon">').text(id + " : " + msj));
-	} else {
-		$('#message').append($('<li class="left_balloon">').text(id + " : " + msj));
-	}
+	$('#message').append($('<li>').text(id + " : " + msj));
 });
 
 /**
@@ -123,6 +110,8 @@ socket.on('get id', function(id) {
   <div id="info">
     <div id="user_name">あなたのID&nbsp;:&nbsp;<p></p></div>
     <div id="user_cnt">アクティブユーザ&nbsp;:&nbsp;<p></p></div>
+    <p class="left_balloon">aokiaokiaokiaokiaokiaoki</p>
+    <p class="right_balloon">talk contents</p>
   </div>
   <ul id="message"></ul>
   <div id="controls">
@@ -132,10 +121,8 @@ socket.on('get id', function(id) {
       <option value="B">Bカップ</option>
       <option value="kenta_bot">kentaのbotチャンネル</option>
     </select>
-	<div class="text_button">
-		<input type="text" id="msj" class="msg_textarea" placeholder="メッセージを入力してください...">
-		<input class="button" type="submit" value="送信" class="send_button">
-	</div>
+    <input type="text" id="msj" placeholder="メッセージを入力してください...">
+    <input type="submit" id="btn" value="送信">
     </form> 
  </div>
 </body>

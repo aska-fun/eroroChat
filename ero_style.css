@@ -1,0 +1,295 @@
+//
+//  ero_style.css
+//  
+//
+//  Created by 青木亜琳 on 2017/04/08.
+//
+//
+html, body, div, span, applet, object, iframe,
+h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+a, abbr, acronym, address, big, cite, code,
+del, dfn, em, font, img, ins, kbd, q, s, samp,
+small, strike, strong, sub, sup, tt, var,
+b, u, i, center,
+dl, dt, dd, ol, ul, li,
+fieldset, form, label, legend,
+table, caption, tbody, tfoot, thead, tr, th, td {
+	margin: 0;
+	padding: 0;
+	border: 0;
+	outline: 0;
+	font-size: 100%;
+	vertical-align: baseline;
+	background: transparent;
+}
+body {
+	line-height: 1;
+}
+ol, ul {
+	list-style: none;
+}
+blockquote, q {
+	quotes: none;
+}
+blockquote:before, blockquote:after,
+q:before, q:after {
+	content: '';
+	content: none;
+}
+
+/* remember to define focus styles! */
+:focus {
+	outline: 0;
+}
+
+/* remember to highlight inserts somehow! */
+ins {
+	text-decoration: none;
+}
+del {
+	text-decoration: line-through;
+}
+
+/* tables still need 'cellspacing=&quot;0&quot;' in the markup */
+table {
+	border-collapse: collapse;
+	border-spacing: 0;
+}
+//ここまで
+
+* {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+    color: #ff66cc;
+}
+body {
+    font-family: Verdana;
+    color: magenta;
+}
+ul {
+    list-style-type: none;
+    padding: 20px;
+    background: #EFE0FF;
+    color: magenta;
+}
+#controls {
+    position: absolute;
+    bottom: 0px;
+    left: 0px;
+    padding: 20px;
+    display: block;
+    width: 100%;
+    color: magenta;
+}
+#controls #msj {
+    float: left;
+    width: 78%;
+    display: block;
+    padding: 20px;
+    border-radius: 5px;
+    color: magenta;
+}
+#controls #btn {
+    float: right;
+    width: 20%;
+    height: 57px;
+    display: block;
+    background: black;
+    border: 1px solid #aaa;
+    font-size: 1.4em;
+    border-radius: 5px;
+    color: #B384C7;
+}
+#controls #channel {
+    display: block;
+    width: 90%;
+    font-size: 1.2em;
+	color :#FFFFFF;
+    background: black;
+    margin-bottom: 10px;
+    height: 45px;
+}
+#info {
+    padding: 15px 10px;
+    background: #E22FAA;
+}
+#user_name p,
+#user_cnt p {
+    display: inline-block;
+}
+
+.button {
+    position: absolute;
+    width: 10%;
+    height: 60px;
+    border: 1px solid #aaa;
+    font-size: 1em;
+    border-radius: 5px;
+    display: inline-block;
+    padding: .65em 4em;
+    background: -webkit-linear-gradient(#fe5f95 , #ff3f7f);
+    background: linear-gradient(#fe5f95 , #ff3f7f);
+    border: 1px solid #fe3276;
+    border-radius: 4px;
+    margin-right: 10px;
+    color: #fff;
+    text-decoration: none;
+    text-align: center;
+    -webkit-transition: .3s ease-in-out;
+    transition: .3s ease-in-out;
+}
+.button:hover {
+    -webkit-animation: bounce 2s ease-in-out;
+    animation: bounce 2s ease-in-out;
+}
+.text_button {
+	width:100%;
+}
+.msg_textarea {
+	width:70%;
+}
+.send_button {
+	width:30%;
+}
+@-webkit-keyframes bounce {
+    5%  { -webkit-transform: scale(1.1, .8); }
+    10% { -webkit-transform: scale(.8, 1.1) translateY(-5px); }
+    15% { -webkit-transform: scale(1, 1); }
+}
+@keyframes bounce {
+    5%  { transform: scale(1.1, .8); }
+    10% { transform: scale(.8, 1.1) translateY(-5px); }
+    15% { transform: scale(1, 1); }
+}
+
+.heart {
+    width: 100px;
+    height: 100px;
+    background: url(http://nelog.jp/wp-content/uploads/2016/03/heart_animation.png) no-repeat;
+    background-position: 0 0;
+    cursor: pointer;
+}
+.heart:hover {
+    background-position: -2800px 0;
+    -webkit-transition: background 1s steps(28);
+    transition: background 1s steps(28);
+}
+
+.heart-big.icon {
+    color: #000;
+    position: absolute;
+    margin-top: 6px;
+    margin-left: 5px;
+    width: 9px;
+    height: 9px;
+    border-left: solid 1px currentColor;
+    border-bottom: solid 1px currentColor;
+    -webkit-transform: rotate(-45deg);
+    transform: rotate(-45deg);
+}
+
+.heart-big{
+    position:relative;
+    padding-top:20px;
+    margin:0 auto;
+    width:150px;
+    height:170px;
+}
+.heart-big:before,
+.heart-big:after{
+    position:absolute;
+    content:"";
+    width:95px;
+    height:150px;
+    background:pink;
+}
+.heart-big:before{
+    left:0px;
+    transform:rotate(-45deg);
+    border-radius:100px 100px 0 0;
+}
+.heart-big:after{
+    left:40px;
+    transform:rotate(45deg);
+    border-radius:100px 100px 0 0;
+}
+
+/* 左からの吹き出し */
+.left_balloon {
+    position: relative;
+    background: #fff;
+    border: 1px solid #777;
+    margin: 10px;
+    padding: 10px;
+    border-radius: 15px;
+    margin-right: 20%;
+    clear: both;
+    max-width: 500px;
+    float: left;
+}
+.left_balloon:after,
+.left_balloon:before {
+    right: 100%;
+    top: 50%;
+    border: solid transparent;
+    content: " ";
+    height: 0;
+    width: 0;
+    position: absolute;
+    pointer-events: none;
+}
+.left_balloon:after {
+    border-color: rgba(255, 255, 255, 0);
+    border-right-color: #fff;
+    border-width: 7px;
+    margin-top: -7px;
+}
+.left_balloon:before {
+    border-color: rgba(0, 0, 0, 0);
+    border-right-color: #000;
+    border-width: 8px;
+    margin-top: -8px;
+}
+
+/* 右からの吹き出し */
+.right_balloon {
+    position: relative;
+    background: #9370DB;
+    border: 1px solid #777;
+    margin: 10px;
+    padding: 10px;
+    border-radius: 15px;
+    margin-left: 20%;
+    clear: both;
+    max-width: 500px;
+    float: right;
+}
+.right_balloon:after,
+.right_balloon:before {
+    left: 100%;
+    top: 50%;
+    border: solid transparent;
+    content: " ";
+    height: 0;
+    width: 0;
+    position: absolute;
+    pointer-events: none;
+}
+.right_balloon:after {
+    border-color: rgba(133, 226, 73, 0);
+    border-left-color: #9370DB;
+    border-width: 7px;
+    margin-top: -7px;
+}
+.right_balloon:before {
+    border-color: rgba(119, 119, 119, 0);
+    border-left-color: #777;
+    border-width: 8px;
+    margin-top: -8px;
+}
+
+/* 割り込みを解除 */
+.clear_balloon{
+    clear: both;
+}
