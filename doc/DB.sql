@@ -6,6 +6,7 @@ SET FOREIGN_KEY_CHECKS=0;
 
 -- テーブルの作成
 -- メッセージ
+-- t_commentになってるけどt_messageに修正したい
 DROP TABLE IF EXISTS `t_comment`;
 CREATE TABLE t_comment (
 		`id`				SMALLINT(6)		NOT NULL AUTO_INCREMENT

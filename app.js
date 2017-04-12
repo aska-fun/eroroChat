@@ -1,5 +1,6 @@
 /**
 * アプリ全体の設定やらいろいろ
+* TODO:passportを使用した認証機能
 *
 * Created by aska-fun
 * Created on 2017/04/01
@@ -34,9 +35,8 @@ app.set('view engine', 'ejs');
  * 共通処理を呼び出し
  **/
 var CommonConst		= require('./bin/CommonConst.js'							);
-var DbConnection	= require('./bin/DbConnection.js'							);
+var DbPool			= require('./bin/DbConnection.js'							);
 
-console.log('▲▲▲' + DbConnection);
 
 /**
  * ミドルウェア
@@ -55,14 +55,13 @@ io.use(sharedsession(session, {
 /**
  * コントローラ
  **/
-//メニュー画面
-ChatController					= require("./routes/ChatController.js"					)(app, http, CommonConst, DbConnection, io);
-//ユーザ管理
-UserSignUpController			= require("./routes/UserSignUpController.js"			)(app, CommonConst, DbConnection);
-UserLogInController				= require("./routes/UserLogInController.js"				)(app, CommonConst, DbConnection);
+ChatController					= require("./routes/ChatController.js"					)(app, http, CommonConst, DbPool, io);
+UserSignUpController			= require("./routes/UserSignUpController.js"			)(app, CommonConst, DbPool);
+UserLogInController				= require("./routes/UserLogInController.js"				)(app, CommonConst, DbPool);
 
 
 //接続待ち状態になる
+//ポート番号は環境変数を使用
 var PORT		= process.env.PORT || 8080;
 http.listen(PORT, function() {
 	console.log('接続開始：', PORT);
