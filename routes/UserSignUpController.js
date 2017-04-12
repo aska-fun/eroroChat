@@ -1,12 +1,12 @@
 /**
-* ユーザログイン画面のコントローラ
+* ユーザ新規登録画面のコントローラ
 *
 * Created by Kozuka
 * Created on 2017/03/24
 * Updated by 
 * Updated on 
 **/
-var UserSignUpController = function(app, CommonConst, DbConnection){
+var UserSignUpController = function(app, CommonConst, pool){
 
 	//ユーザ登録画面にGETしたときの処理
 	app.get('/user_sign_up', function(req, res, next) {
@@ -42,15 +42,21 @@ var UserSignUpController = function(app, CommonConst, DbConnection){
 
 		(function () {
 			return new Promise(function(resolve, reject) {
-				//クエリ実行
-	    		DbConnection.query(query, function(err, rows, fields) {
-	    		    if (err) {
-	    		        console.log('error: ', err);
-	    		        reject();
-	    		    }
-					console.log('▲▲▲▲▲▲▲▲▲▲');
-					resolve(rows);
-	    		});
+				pool.getConnection(function(err, connection) {
+					// Use the connection
+					//クエリ実行
+	    			connection.query(query, function(err, rows, fields) {
+	    		    	if (err) {
+	    		        	console.log('error: ', err);
+	    		        	reject();
+	    		    	}
+						console.log('▲▲▲▲▲▲▲▲▲▲');
+						resolve(rows);
+						// プールに戻す
+						// これ以降connectionは使用不可。
+						connection.release();
+					});
+				});
 			});
 		})()
 		//セレクト結果を受け取る
@@ -68,17 +74,22 @@ var UserSignUpController = function(app, CommonConst, DbConnection){
 				}
 
 				console.log(fields);
-				//インサート
-				DbConnection.query(
-						'INSERT INTO t_user SET ?'
-					,	fields
-					,	function (error, results, fields) {
-							if (error) throw error;
-								console.log(result.insertId);
-						}
-				);
-				console.log('▲▲▲▲▲▲▲▲▲▲');
-				resolve();
+				pool.getConnection(function(err, connection) {
+					//インサート
+					connection.query(
+							'INSERT INTO t_user SET ?'
+						,	fields
+						,	function (error, results, fields) {
+								if (error) throw error;
+									console.log(result.insertId);
+								console.log('▲▲▲▲▲▲▲▲▲▲');
+								resolve();
+								// プールに戻す
+								// これ以降connectionは使用不可。
+								connection.release();
+							}
+					);
+				});
 			});
 		})
 		//インサート処理後

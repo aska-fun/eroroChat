@@ -8,7 +8,7 @@
 **/
 
 
-var ChatController = function(app, http, CommonConst, DbConnection, io){
+var ChatController = function(app, http, CommonConst, pool, io){
 
 	console.log('▲▲▲' + io);
 
@@ -65,20 +65,27 @@ var ChatController = function(app, http, CommonConst, DbConnection, io){
 		//全ユーザ上のユーザ数を更新
 		io.emit('user cnt', userCnt);
 		
-		//DBから今までのメッセージを取ってきて自分だけに表示
-	    DbConnection.query('SELECT * from t_comment', function(err, rows, fields) {
-	        if (err) {
-	            console.log('error: ', err);
-	            throw err;
-	        }
-			//「ようこそ」と「ID」を自分の画面だけに表示
-	        console.log(socket.handshake.session.user.user_name);
-			socket.emit('welcome', socket.handshake.session.user.user_name, rows);
-			socket.emit('get user_name', socket.handshake.session.user.user_name);
-		
-			//接続時に同じチャンネルの人に入室を伝える
-			socket.broadcast.to(channel).emit('message', socket.handshake.session.user.user_name + 'さんが入室しました！', 'system'); 
-	    });
+		pool.getConnection(function(err, connection) {
+			// Use the connection
+			//クエリ実行
+			//DBから今までのメッセージを取ってきて自分だけに表示
+	    	connection.query('SELECT * from t_comment', function(err, rows, fields) {
+	        	if (err) {
+	            	console.log('error: ', err);
+	            	throw err;
+	        	}
+				//「ようこそ」と「ID」を自分の画面だけに表示
+	        	console.log(socket.handshake.session.user.user_name);
+				socket.emit('welcome', socket.handshake.session.user.user_name, rows);
+				socket.emit('get user_name', socket.handshake.session.user.user_name);
+			
+				//接続時に同じチャンネルの人に入室を伝える
+				socket.broadcast.to(channel).emit('message', socket.handshake.session.user.user_name + 'さんが入室しました！', 'system'); 
+				// プールに戻す
+				// これ以降connectionは使用不可。
+				connection.release();
+			});
+		});
 	
 		/**
 		 * 'message'イベント関数
@@ -88,18 +95,25 @@ var ChatController = function(app, http, CommonConst, DbConnection, io){
 		socket.on('message', function(userName, msj) {
 			io.sockets.in(channel).emit('message', userName, msj);
 	
-			//DBに保存
-			DbConnection.query(
-					'INSERT INTO t_comment SET ?'
-				,	{
-							user_name: userName
-						,	comment: msj
-					}
-				,	function(err, result) {
-						if (err) throw err;
-						console.log(result.insertId);
-					}
-			);
+			pool.getConnection(function(err, connection) {
+				// Use the connection
+				//クエリ実行
+				//DBに保存
+				connection.query(
+						'INSERT INTO t_comment SET ?'
+					,	{
+								user_name: userName
+							,	comment: msj
+						}
+					,	function(err, result) {
+							if (err) throw err;
+							console.log(result.insertId);
+							// プールに戻す
+							// これ以降connectionは使用不可。
+							connection.release();
+						}
+				);
+			});
 		});
 
 		/**

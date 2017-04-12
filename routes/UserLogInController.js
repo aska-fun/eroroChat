@@ -6,7 +6,7 @@
 * Updated by 
 * Updated on 
 **/
-var UserLogInController = function(app, CommonConst, DbConnection){
+var UserLogInController = function(app, CommonConst, pool){
 
 	//ルートディレクトリにアクセスした時に動く処理
 	app.get('/', function(req, res) {
@@ -56,13 +56,20 @@ var UserLogInController = function(app, CommonConst, DbConnection){
 	
 		(function () {
 			return new Promise(function(resolve, reject) {
-				//クエリ実行
-	    		DbConnection.query(query, function(err, rows, fields) {
-	    		    if (err) {
-	    		        console.log('error: ', err);
-	    		        reject();
-	    		    }
-					resolve(rows);
+				pool.getConnection(function(err, connection) {
+					//クエリ実行
+	    			connection.query(query, function(err, rows, fields) {
+	    		    	if (err) {
+	    		        	console.log('error: ', err);
+	    		        	reject();
+	    		    	}
+						resolve(rows);
+						// Use the connection
+						resolve(rows);
+						// プールに戻す
+						// これ以降connectionは使用不可。
+						connection.release();
+					});
 	    		});
 			});
 		})()
@@ -93,3 +100,4 @@ var UserLogInController = function(app, CommonConst, DbConnection){
 	});
 };
 module.exports = UserLogInController
+
