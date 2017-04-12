@@ -1,5 +1,4 @@
-eroroChat
-===================
+# eroroChat
 
 
 http://eelee.herokuapp.com/
@@ -22,51 +21,75 @@ http://eelee.herokuapp.com/
 
 
 アプリ設定を表示  
-`heroku config --app <アプリ名>`  
-`heroku config --app secret-gorge-46628`  
 
-MySQLのリモートホストに接続するコマンド  
-`mysql -h <ホスト名> -u <ユーザ名> -p`  
-`mysql -h us-cdbr-iron-east-03.cleardb.net -u bac9292c240c4a -p`  
-
-sqlファイルを実行するコマンド  
-`source <sqlファイルパス>`  
-`source ./DB.sql`  
-
-herokuのリモートレポジトリを追加するコマンド  
-`heroku git:remote -a <herokuアプリ名>`  
-`heroku git:remote -a secret-gorge-46628`  
-
-ログをリアルタイムで表示  
-`heroku logs --tail --app <herokuアプリ名>`  
-`heroku logs --tail --app secret-gorge-46628`  
+    heroku config --app <アプリ名>
+    heroku config --app secret-gorge-46628
 
 
+herokuのリモートレポジトリを追加するコマンド
+
+    heroku git:remote -a <herokuアプリ名>
+    heroku git:remote -a secret-gorge-46628
+
+ログをリアルタイムで表示
+
+    heroku logs --tail --app <herokuアプリ名>
+    heroku logs --tail --app secret-gorge-46628
 
 
-下記のように記述すればDB接続は可能だが、ハードコーディングは良くないし、
-githubに公開する場合にセキュリティ的にだだ漏れ
-//DBの設定
-var db_config = {
-    host:		'us-cdbr-iron-east-03.cleardb.net',
-    user:		'bd61b3be7eaa27',
-    password:	'fa04ea25',
-    database:	'heroku_3f873eb64d6cbc6'
-};
-var connection = mysql.createConnection(db_config); 
-    
-環境変数を使えばDB情報ハードコードなしでいける  
+## DBテーブル作成方法
 
-`heroku config --app <アプリ名>`  
+以下のコマンドを実行
 
-出力されたURLを以下で環境変数に登録
+    heroku config --app <アプリ名>
 
-`heroku config:set DATABASE_URL="mysql2://<username>:<password>@<host>/<database>?reconnect=true&encoding=utf8mb4"  
+以下が表示される
+
+    === <アプリ名> Config Vars
+    CLEARDB_DATABASE_URL: mysql://<ユーザ名>:<パスワード>@<ホスト名>/<DB名>?reconnect=true
+
+MySQLのリモートホストに接続する
+
+    mysql -h <ホスト名> -u <ユーザ名> -p
+
+例えば
+
+    mysql -h us-cdbr-iron-east-03.cleardb.net -u bac9292c240c4a -p
+
+使用するDBを選択する
+
+    use <DB名>;
+
+sqlファイルを実行する
+
+    source <sqlファイルパス>
+
+例えば
+
+    source ./DB.sql
+
+
+## DB接続方法
+
+以下のコマンドを実行
+
+    heroku config --app <アプリ名>
+
+以下が表示される
+
+    === <アプリ名> Config Vars
+    CLEARDB_DATABASE_URL: mysql://<ユーザ名>:<パスワード>@<ホスト名>/<DB名>?reconnect=true
+
+出力された情報を以下で環境変数に登録
+
+    heroku config:set DATABASE_URL="mysql2://<ユーザ名>:<パスワード>@<ホスト名>/<DB名>?reconnect=true&encoding=utf8mb4"
 
 
 あとは以下のようにコードから環境変数を使用してDBに接続する
-`var connection = mysql.createConnection(process.env.DATABASE_URL);  
 
+    var connection = mysql.createConnection(process.env.DATABASE_URL);  
+
+## その他
 
 #Herokuログイン
 heroku login

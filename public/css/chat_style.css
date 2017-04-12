@@ -72,9 +72,10 @@ ul {
     padding: 20px;
     background: #EFE0FF;
     color: magenta;
+	margin-bottom: 120px;
 }
 #controls {
-    position: absolute;
+    position: fixed;
     bottom: 0px;
     left: 0px;
     padding: 20px;
@@ -145,6 +146,7 @@ ul {
 }
 .text_button {
 	width:100%;
+    background:#ffffff;
 }
 .msg_textarea {
 	width:70%;
@@ -226,7 +228,6 @@ ul {
     margin-right: 20%;
     clear: both;
     max-width: 500px;
-    float: left;
 }
 .left_balloon:after,
 .left_balloon:before {
@@ -263,7 +264,6 @@ ul {
     margin-left: 20%;
     clear: both;
     max-width: 500px;
-    float: right;
 }
 .right_balloon:after,
 .right_balloon:before {

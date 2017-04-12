@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no">
-<link rel="stylesheet" href="./ero_style.css">
+<link rel="stylesheet" href="../css/chat_style.css">
 <title>eroroChat</title>
 <!-- SocketIOを持ってくる -->
 <script src="/socket.io/socket.io.js"></script>
@@ -14,6 +14,7 @@
 <script>
 //サーバー側とつなぐため
 var socket = io();
+var userName = "";
 
 /***********************************
  * JQuery（画面）のイベントハンドラの登録
@@ -28,13 +29,13 @@ $(function() {
  	**/
 	$('form').submit(function() {
 		// メッセージを取得
-		var mensaje = $('#msj').val();
+		var message = $('#msj').val();
 		
 		// メッセージがなければ終了 
-		if (mensaje === '') return false;
+		if (message === '') return false;
 		
 		// メッセージを送信
-		socket.emit('message', mensaje);
+		socket.emit('message', userName, message);
 		
 		// メッセージの中身を空にしえフォーカスする
 		$('#msj').val('').focus();
@@ -59,17 +60,27 @@ $(function() {
  * 接続したときに呼ばれるイベント
  * ここで作ったイベント名でサーバーサイドの処理を紐付ける
  **/
-socket.on('welcome', function(messageArray) {
+socket.on('welcome', function(user_name, messageArray) {
 	//debug
-	//console.log(messageArray);
+	console.log(messageArray);
+	console.log(user_name);
+
+	//クライアントでユーザ名を保持する
+	userName = user_name;
 
 	//取得したメッセージをulに追加
-	$('#message').append($('<li>').text('ようこそ！！'));
+	$('#message').append($('<li>').text('ようこそ' + user_name + 'さん'));
 
 	//DBから取得したメッセージをulに追加
 	messageArray.forEach(function(msg) {
-		//console.log(msg);
-		$('#message').append($('<li>').text(msg.user_id + " : " + msg.comment));
+		//自分のIDの場合は右に表示
+		var whichBaloon = '';
+		if(msg.user_name == userName) {
+			whichBaloon = 'right';
+		} else {
+			whichBaloon = 'left';
+		}
+		$('#message').append($('<li class="' + whichBaloon + '_balloon">').text(msg.user_name + " : " + msg.comment));
 	});
 });
 
@@ -86,9 +97,16 @@ socket.on('user cnt', function(cnt) {
  * @param メッセージ
  * @param ユーザID
  **/
-socket.on('message', function(msj, id) {
+socket.on('message', function(user_name, msg) {
 	// 取得したメッセージをulに追加
-	$('#message').append($('<li>').text(id + " : " + msj));
+	//自分のIDの場合は右に表示
+	var whichBaloon = '';
+	if(userName == user_name) {
+		whichBaloon = 'right';
+	} else {
+		whichBaloon = 'left';
+	}
+	$('#message').append($('<li class="' + whichBaloon + '_balloon">').text(user_name + " : " + msg));
 });
 
 /**
@@ -103,27 +121,38 @@ socket.on('change channel', function(channel) {
 /**
  * チャンネルが変わったことをメッセージで表示
  **/
-socket.on('get id', function(id) {
-	$('#user_name p').html('').text(id);
+socket.on('get user_name', function(user_name) {
+	$('#user_name p').html('').text(user_name);
 });
+
+/**
+ * ルートにリダイレクトするイベント
+ **/
+socket.on('redirect', function(destination) {
+	window.location.href = destination;
+});
+
 </script>
-  <div id="info">
-    <div id="user_name">あなたのID&nbsp;:&nbsp;<p></p></div>
-    <div id="user_cnt">アクティブユーザ&nbsp;:&nbsp;<p></p></div>
-    <p class="left_balloon">aokiaokiaokiaokiaokiaoki</p>
-    <p class="right_balloon">talk contents</p>
-  </div>
-  <ul id="message"></ul>
-  <div id="controls">
-    <form action="">
-    <select name="channel" id="channel">
-      <option value="A" selected>Aカップ</option>
-      <option value="B">Bカップ</option>
-      <option value="kenta_bot">kentaのbotチャンネル</option>
-    </select>
-    <input type="text" id="msj" placeholder="メッセージを入力してください...">
-    <input type="submit" id="btn" value="送信">
-    </form> 
+	<a href="/user_log_out" class="btn">ログアウト</a></br>
+	<div id="info">
+		<!--TODO:下記はexpressのバインドを使えば簡単にかける-->
+		<div id="user_name">あなたのID&nbsp;:&nbsp;<p></p></div>
+		<div id="user_cnt">アクティブユーザ&nbsp;:&nbsp;<p></p></div>
+	</div>
+	<ul id="message"></ul>
+	<div id="controls">
+		<form action="">
+			<select name="channel" id="channel">
+				<!--チャンネルも動的にオプションを変更可能-->
+				<option value="A" selected>Aカップ</option>
+				<option value="B">Bカップ</option>
+				<option value="kenta_bot">kentaのbotチャンネル</option>
+			</select>
+			<div class="text_button">
+				<input type="text" id="msj" class="msg_textarea" placeholder="メッセージを入力してください...">
+				<input class="button" type="submit" value="送信" class="send_button">
+		</div>
+	</form> 
  </div>
 </body>
 </html>
