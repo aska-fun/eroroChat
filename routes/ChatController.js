@@ -65,27 +65,9 @@ var ChatController = function(app, http, CommonConst, pool, io){
 		//全ユーザ上のユーザ数を更新
 		io.emit('user cnt', userCnt);
 		
-		pool.getConnection(function(err, connection) {
-			// Use the connection
-			//クエリ実行
-			//DBから今までのメッセージを取ってきて自分だけに表示
-	    	connection.query('SELECT * from t_comment', function(err, rows, fields) {
-	        	if (err) {
-	            	console.log('error: ', err);
-	            	throw err;
-	        	}
-				//「ようこそ」と「ID」を自分の画面だけに表示
-	        	console.log(socket.handshake.session.user.user_name);
-				socket.emit('welcome', socket.handshake.session.user.user_name, rows);
-				socket.emit('get user_name', socket.handshake.session.user.user_name);
-			
-				//接続時に同じチャンネルの人に入室を伝える
-				socket.broadcast.to(channel).emit('message', socket.handshake.session.user.user_name + 'さんが入室しました！', 'system'); 
-				// プールに戻す
-				// これ以降connectionは使用不可。
-				connection.release();
-			});
-		});
+		sendPastMsg(pool, socket, channel)
+		.then(tellEveryoneWhoEnter(socket, channel));
+
 	
 		/**
 		 * 'message'イベント関数
@@ -102,8 +84,9 @@ var ChatController = function(app, http, CommonConst, pool, io){
 				connection.query(
 						'INSERT INTO t_comment SET ?'
 					,	{
-								user_name: userName
-							,	comment: msj
+								user_name	: userName
+							,	channel		:channel
+							,	comment		: msj
 						}
 					,	function(err, result) {
 							if (err) throw err;
@@ -179,9 +162,49 @@ var ChatController = function(app, http, CommonConst, pool, io){
 			channel = newChannel; 
 			//チャンネルを変えたこと自分に送信
 			socket.emit('change channel', channel); 
-			//ルーム内の自分以外
-			socket.broadcast.to(channel).emit('message', socket.handshake.session.user.user_name + 'さんが入室しました！', 'system');
+
+			sendPastMsg(pool, socket, channel)
+			.then(tellEveryoneWhoEnter(socket, channel));
 		});
 	});
+	/**
+	* DBから今までのメッセージを取ってきて自分だけに表示
+	* @param DBインスタンス
+	* @param socket
+	* @return Promise
+	**/
+	function sendPastMsg(pool, socket, channel) {
+		return new Promise(function(resolve, reject) {
+			pool.getConnection(function(err, connection) {
+				//クエリ実行
+	    		connection.query('SELECT * from t_comment where channel = ' + '\'' + channel + '\'', function(err, rows, fields) {
+	        		if (err) {
+	            		console.log('error: ', err);
+	            		throw err;
+	        		}
+					//「ようこそ」と「ID」を自分の画面だけに表示
+	        		console.log(socket.handshake.session.user.user_name);
+					socket.emit('welcome', socket.handshake.session.user.user_name, rows);
+					socket.emit('get user_name', socket.handshake.session.user.user_name);
+				
+					//接続時に同じチャンネルの人に入室を伝える
+					socket.broadcast.to(channel).emit('message', socket.handshake.session.user.user_name + 'さんが入室しました！', 'system'); 
+					// プールに戻す
+					// これ以降connectionは使用不可。
+					connection.release();
+					resolve(socket, channel);
+				});
+			});
+		});
+	}
+	/**
+	* 接続時に同じチャンネルの人に入室を伝える
+	* @param socket
+	* @param チャンネル
+	**/
+	function tellEveryoneWhoEnter(socket, channel) {
+		//接続時に同じチャンネルの人に入室を伝える
+		socket.broadcast.to(channel).emit('message', socket.handshake.session.user.user_name + 'さんが入室しました！', 'system'); 
+	}
 };
 module.exports = ChatController;

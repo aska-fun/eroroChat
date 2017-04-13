@@ -11,6 +11,7 @@ DROP TABLE IF EXISTS `t_comment`;
 CREATE TABLE t_comment (
 		`id`				SMALLINT(6)		NOT NULL AUTO_INCREMENT
 	,	`user_name`			VARCHAR(100)	DEFAULT NULL
+	,	`channel`			VARCHAR(100)	DEFAULT NULL
 	,	`comment`			VARCHAR(100)	DEFAULT NULL
 	,	PRIMARY KEY (id)
 ) ENGINE=InnoDB DEFAULT character set utf8mb4;
@@ -26,7 +27,7 @@ CREATE TABLE t_user (
 ) ENGINE=InnoDB character set utf8mb4;
 
 -- インサート
-INSERT INTO `t_comment` VALUES ('1', 'sample001', 'サンプルコメント001');
-INSERT INTO `t_comment` VALUES ('2', 'sample002', 'サンプルコメント002');
-INSERT INTO `t_comment` VALUES ('3', 'sample003', 'サンプルコメント003');
+INSERT INTO `t_comment` VALUES ('1', 'sample001', 'A', 'サンプルコメント001');
+INSERT INTO `t_comment` VALUES ('2', 'sample002', 'A', 'サンプルコメント002');
+INSERT INTO `t_comment` VALUES ('3', 'sample003', 'B', 'サンプルコメント003');
 
