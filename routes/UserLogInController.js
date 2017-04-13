@@ -64,8 +64,6 @@ var UserLogInController = function(app, CommonConst, pool){
 	    		        	reject();
 	    		    	}
 						resolve(rows);
-						// Use the connection
-						resolve(rows);
 						// プールに戻す
 						// これ以降connectionは使用不可。
 						connection.release();

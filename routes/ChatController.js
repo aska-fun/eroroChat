@@ -10,8 +10,6 @@
 
 var ChatController = function(app, http, CommonConst, pool, io){
 
-	console.log('▲▲▲' + io);
-
 	//ユーザ数を格納する変数
 	var userCnt = {
 			a			: 0

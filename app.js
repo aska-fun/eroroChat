@@ -2,10 +2,10 @@
 * アプリ全体の設定やらいろいろ
 * TODO:passportを使用した認証機能
 *
-* Created by aska-fun
-* Created on 2017/04/01
-* Updated by 
-* Updated on 
+* Created	by aska-fun
+* 			on 2017/04/01
+* Updated	by 
+* 			on 
 **/
 
 /*
@@ -55,9 +55,9 @@ io.use(sharedsession(session, {
 /**
  * コントローラ
  **/
-ChatController					= require("./routes/ChatController.js"					)(app, http, CommonConst, DbPool, io);
-UserSignUpController			= require("./routes/UserSignUpController.js"			)(app, CommonConst, DbPool);
-UserLogInController				= require("./routes/UserLogInController.js"				)(app, CommonConst, DbPool);
+ChatController					= require("./routes/ChatController.js"					)(app, http,		CommonConst, DbPool, io);
+UserSignUpController			= require("./routes/UserSignUpController.js"			)(app, CommonConst,	DbPool);
+UserLogInController				= require("./routes/UserLogInController.js"				)(app, CommonConst,	DbPool);
 
 
 //接続待ち状態になる

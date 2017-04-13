@@ -1,19 +1,27 @@
-//
-//  ero_style.css
-//  
-//
-//  Created by 青木亜琳 on 2017/04/08.
-//
-//
-html, body, div, span, applet, object, iframe,
-h1, h2, h3, h4, h5, h6, p, blockquote, pre,
-a, abbr, acronym, address, big, cite, code,
-del, dfn, em, font, img, ins, kbd, q, s, samp,
-small, strike, strong, sub, sup, tt, var,
-b, u, i, center,
-dl, dt, dd, ol, ul, li,
-fieldset, form, label, legend,
-table, caption, tbody, tfoot, thead, tr, th, td {
+/*
+  ero_style.css
+  TODO: 複数ファイルに分ける？分けたら共通部分はどうする？
+
+  Created	by 青木亜琳
+  			on 2017/04/08.
+  Updated	by 
+ 			on 
+ */
+
+/******************************************************
+ * ここから初期化
+ ******************************************************/
+html,	body,	div,	span,	applet,	object,	iframe,
+h1,		h2,		h3,		h4,		h5,		h6,		p,
+blockquote,		pre,	a,		abbr,	acronym,
+address,		big,	cite,	code,	del,	dfn,
+em,		font,	img,	ins,	kbd,	q,		s,
+samp,	small,	strike, strong,	sub,	sup,	tt,
+var		,i		b,		u,		i,		center,	dl,
+dt,		dd,		ol,		ul,		li,		fieldset,
+form,	label,	legend,	table,	caption,tbody,	tfoot,
+thead,	tr,		th,		td
+{
 	margin: 0;
 	padding: 0;
 	border: 0;
@@ -55,7 +63,9 @@ table {
 	border-collapse: collapse;
 	border-spacing: 0;
 }
-//ここまで
+/******************************************************
+ * ここまで初期化
+ ******************************************************/
 
 * {
     padding: 0;
@@ -217,7 +227,9 @@ ul {
     border-radius:100px 100px 0 0;
 }
 
-/* 左からの吹き出し */
+/******************************************************
+ * 左からの吹き出し
+ ******************************************************/
 .left_balloon {
     position: relative;
     background: #fff;
@@ -253,7 +265,9 @@ ul {
     margin-top: -8px;
 }
 
-/* 右からの吹き出し */
+/******************************************************
+ * 右からの吹き出し
+ ******************************************************/
 .right_balloon {
     position: relative;
     background: #9370DB;
