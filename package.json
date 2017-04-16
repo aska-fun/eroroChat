@@ -1,35 +1,36 @@
 {
-	"name"			: "eroroChat",
-	"version"		: "0.0.0",
-	"description"	: "realtime chat",
-	"main"			: "app.js",
-	"dependencies"	: {
-		"express"			: "*",
-		"socket.io"			: "*",
-		"mysql"				: "*",
-    	"body-parser"		: "*",
-    	"express-session"	: "*",
-    	"ejs"				: "*",
-		"express-socket.io-session" : "*"
-	},
-	"devDependencies": {},
-	"scripts"		: {
-		"start"			: "node app.js"
-	},
-	"engines"		: {
-		"node"			: "*"
-	},
-	"author"		: "aska-fun",
-	"license"		: "ISC",
-	"directories"	: {
-		"doc"			: "doc"
-	},
-	"repository"	: {
-		"type"			: "git",
-		"url"			: "git+https://github.com/aska-fun/chat.git"
-	},
-	"bugs"			: {
-		"url"			: "https://github.com/aska-fun/chat/issues"
-	},
-	"homepage"		: "https://github.com/aska-fun/chat#readme"
+		"name"			: "eroroChat"
+	,	"version"		: "0.0.0"
+	,	"description"	: "realtime chat"
+	,	"main"			: "app.js"
+	,	"dependencies"	: {
+				"express"			: "*"
+			,	"socket.io"			: "*"
+			,	"mysql"				: "*"
+    		,	"body-parser"		: "*"
+    		,	"express-session"	: "*"
+    		,	"ejs"				: "*"
+			,	"express-socket.io-session" : "*"
+		}
+	,	"devDependencies": {
+		}
+	,	"scripts"		: {
+				"start"			: "node app.js"
+		}
+	,	"engines"		: {
+				"node"			: "*"
+		}
+	,	"author"		: "aska-fun"
+	,	"license"		: "ISC"
+	,	"directories"	: {
+				"doc"			: "doc"
+		}
+	,	"repository"	: {
+				"type"			: "git"
+			,	"url"			: "git+https://github.com/aska-fun/chat.git"
+		}
+	,	"bugs"			: {
+				"url"			: "https://github.com/aska-fun/chat/issues"
+		}
+	,	"homepage"		: "https://github.com/aska-fun/chat#readme"
 }
