@@ -9,6 +9,13 @@ if [ "$answer" != "y" ]; then
 	exit;
 fi
 
+echo -n heroku cliコマンドはインストール済ですか? [y/n]
+read answer
+if [ "$answer" != "y" ]; then
+	echo "まずはheroku cliで検索してみましょう"
+	exit;
+fi
+
 echo -n herokuのアカウントにクレジットカード情報を登録していますか? [y/n]
 read answer
 if [ "$answer" != "y" ]; then
