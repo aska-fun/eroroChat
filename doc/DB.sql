@@ -12,8 +12,6 @@ CREATE TABLE t_comment (
 	,	`user_name`			VARCHAR(100)	DEFAULT NULL
 	,	`channel`			VARCHAR(100)	DEFAULT NULL
 	,	`message`			VARCHAR(100)	DEFAULT NULL
-	,	delete_flog			TINYINT(1)
-	,	CREATED_DATETIME timestamp not null default current_timestamp
 	,	PRIMARY KEY (id)
 ) ENGINE=InnoDB DEFAULT character set utf8mb4;
 -- ユーザ
@@ -23,23 +21,20 @@ CREATE TABLE t_user (
 	,	user_name			VARCHAR(20)
 	,	user_password		VARCHAR(30)
 	,	email				VARCHAR(255)
-	,	delete_flog			TINYINT(1)
-	,	CREATED_DATETIME timestamp not null default current_timestamp
 	,	primary KEY (id)
 	,	INDEX(id)
 ) ENGINE=InnoDB character set utf8mb4;
 
 -- チャンネル
-DROP TABLE IF EXISTS `t_channel`;
-CREATE TABLE t_channel (
-		id					INT AUTO_INCREMENT
-	,	channel_name		VARCHAR(20)
-	,	created_user		VARCHAR(100)
-	,	delete_flog			TINYINT(1)
-	,	CREATED_DATETIME timestamp not null default current_timestamp
-	,	primary KEY (id)
-	,	INDEX(id)
-) ENGINE=InnoDB character set utf8mb4;
+-- DROP TABLE IF EXISTS `t_channel`;
+-- CREATE TABLE t_channel (
+		-- id					INT AUTO_INCREMENT
+	-- ,	channel_name		VARCHAR(20)
+	-- ,	created_user		VARCHAR(100)
+	-- ,	CREATED_DATETIME timestamp not null default current_timestamp
+	-- ,	primary KEY (id)
+	-- ,	INDEX(id)
+-- ) ENGINE=InnoDB character set utf8mb4;
 
 -- サンプルインサート
 INSERT INTO `t_comment` VALUES ('1', 'sample001', 'A', 'サンプルコメント001');
